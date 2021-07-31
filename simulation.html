@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>CareTech</title>
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+
+    <link rel="stylesheet" href="assets/css/templatemo-lava.css">
+
+    <link rel="stylesheet" href="assets/css/owl-carousel.css">
+    <link rel="icon" href="assets/images/ico.ico">
+
+</head>
+
+<body>
+
+    <!-- ** Preloader Start ** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ** Preloader End ** -->
+
+
+    <!-- ** Header Area Start ** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ** Logo Start ** -->
+                        <a href="index.html" class="logo">
+                            CareTech
+                        </a>
+                        <!-- ** Logo End ** -->
+                        <!-- ** Menu Start ** -->
+                        <ul class="nav">
+        
+
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ** Menu End ** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ** Header Area End ** -->
+    <!-- ** Features Big Item Start ** -->
+    <section class="section" id="promotion">
+        <div class="container">
+            <div class="row">
+                <div class="left-image col-lg-5 col-md-12 col-sm-12 mobile-bottom-fix-big"
+                    data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+                    <img src="assets/images/left-image.png" class="rounded img-fluid d-block mx-auto" alt="App">
+                </div>
+                <div class="right-text offset-lg-1 col-lg-6 col-md-12 col-sm-12 mobile-bottom-fix">
+                    <ul>
+                        <li data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+                            <img src="assets/images/about-icon-01.png" alt="">
+                            <div class="text">
+                                <h4>Heart Rate and Blood Oxygen Levels</h4>
+                                <p>Our technology provides updates on heart rate and blood oxygen level,and also gives an emergency alarm if it is too low or too high.</p>
+                            </div>
+                        </li>
+                        <li data-scroll-reveal="enter right move 30px over 0.6s after 0.5s">
+                            <img src="assets/images/about-icon-02.png" alt="">
+                            <div class="text">
+                                <h4>Emergency Button</h4>
+                                <p>Our technology provides a feature to send an alert in case an emergency arises.</p>
+                            </div>
+                        </li>
+                        <li data-scroll-reveal="enter right move 30px over 0.6s after 0.6s">
+                            <img src="assets/images/about-icon-03.png" alt="">
+                            <div class="text">
+                                <h4>Location and step tracking</h4>
+                                <p>Our technology provides updates on location and steps.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ** Features Big Item End ** -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <style>
+        th{ 
+            color:#fff;
+                }
+        .tab{
+            margin-left:20%;
+            margin-right: 20%;
+        }
+    </style>
+<section>
+    <div class="center-heading">
+        <h2> <em>Simulations</em> results</h2>
+        <p></p>
+    </div>
+<div class="tab">
+    <table class="table table-striped table-hover" style="margin-left: 20px;margin-right: 20px;">
+        <tr style="  background: linear-gradient(to right, #000046, #1cb5e0);;">
+            <th>Heartbeat</th>
+            <th>spO2 level</th>
+            <th>Steps</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
+            <th>Emergency</th>
+        </tr>
+    
+        <tbody id="myTable">
+            
+        </tbody>
+    </table>
+</div>
+    
+</section>
+
+<div id="emer" style="display: none;"></div>
+<div style="display: inline-block; margin-left:35%; margin-right:30%;margin-top:20px;"><iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1460131/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&xaxis=Time"></iframe>
+</div>
+</body>
+<!--JAVASCRIPT-->
+
+    <script>
+        var myArray = []
+        
+    
+        $.ajax({
+            method:'GET',
+            url:'https://api.thingspeak.com/channels/1460131/feeds.json?results=2',
+            success:function(response){
+                myArray = response.feeds
+                buildTable(myArray)
+                console.log(myArray)
+            }
+        })
+    
+    
+    
+        function buildTable(data){
+            var table = document.getElementById('myTable')
+    
+            for (var i = 0; i < data.length; i++){
+                var row = `<tr>
+                                
+                                <td>${data[i].field1}</td>
+                                <td>${data[i].field2}</td>
+                                <td>${data[i].field3}</td>
+                                <td>${data[i].field4}</td>
+                                <td>${data[i].field5}</td>
+                                <td>${data[i].field6}</td>
+                          </tr>`
+                table.innerHTML += row
+                if (data[i].field6==1){
+                    //document.getElementById("emer").innerHTML = alert("Emergency alert!");
+                    document.getElementById("emer").innerHTML = alert("Emergency alert!");
+                }
+    
+            }
+            
+        }
+        
+    </script>
+
+    <!-- ** Footer Start ** -->
+    <footer id="contact-us">
+        <div class="container">
+            <div class="footer-content">
+                <div class="row">
+                    <!-- ** Contact Form Start ** -->
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="contact-form">
+                            <form id="contact" action="" method="post">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <fieldset>
+                                            <input name="name" type="text" id="name" placeholder="Full Name" required=""
+                                                style="background-color: rgba(250,250,250,0.3);">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <fieldset>
+                                            <input name="email" type="text" id="email" placeholder="E-Mail Address"
+                                                required="" style="background-color: rgba(250,250,250,0.3);">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <fieldset>
+                                            <textarea name="message" rows="6" id="message" placeholder="Your Message"
+                                                required="" style="background-color: rgba(250,250,250,0.3);"></textarea>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <fieldset>
+                                            <button type="submit" id="form-submit" class="main-button">Send Message
+                                                Now</button>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- ** Contact Form End ** -->
+                    <div class="right-content col-lg-6 col-md-12 col-sm-12">
+                        <h2>More About <em>CareTech</em></h2>
+                        <p>We aim to build a affordable and durable alternative for expensive smart watches. This innovation may prove to be life-changing and we believe that in a few years every elderly will use this for their safety. </p>
+                        <ul class="social">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <p>Copyright &copy; 2021 CareTech</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/js/popper.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/scrollreveal.min.js"></script>
+    <script src="assets/js/waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/imgfix.min.js"></script>
+
+    <!-- Global Init -->
+    <script src="assets/js/custom.js"></script>
+
+</body>
+</html>
